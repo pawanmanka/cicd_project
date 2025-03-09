@@ -1,4 +1,4 @@
-name: Firebase Continuous Deployment
+name: 🚀 Deploy to Server
 
 on:
   push:
@@ -7,11 +7,27 @@ on:
 
 jobs:
   deploy:
+    name: Deploy to Production Server
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@main
-      - uses: actions/setup-node@main
-        with:
-          node-version: 12
-      - run: npm ci
-      - run: npm run build
+      - name: 🚀 Checkout Repository
+        uses: actions/checkout@v3
+      
+      - name: 🔑 Setup SSH & Deploy
+        run: |
+          # Setup SSH Key
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key
+          chmod 600 private_key
+
+          # Connect & Run Deployment Commands
+          ssh -i private_key -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+            cd /var/www/html  # Change to your project directory
+            git pull origin main  # Pull the latest changes
+            
+            # Cleanup
+            exit
+          EOF
+
+      - name: ✅ Deployment Successful
+        run: echo "Deployment completed successfully!"
