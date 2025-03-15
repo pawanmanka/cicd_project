@@ -15,6 +15,7 @@ jobs:
           echo "Checking if secrets are set..."
           echo "PROJECT_PATH length: ${#PROJECT_PATH}"
           echo "PROJECT_PATH 1 ${{ secrets.PROJECT_PATH }} "
+          echo "SSH_USER  ${{ secrets.SSH_USER }} "
         env:
           PROJECT_PATH: ${{ secrets.PROJECT_PATH }}
     
