@@ -9,10 +9,11 @@ jobs:
   deploy:
     name: Deploy to Production Server
     runs-on: ubuntu-latest
-  steps:
-    - name: Debug Secrets
-      run: |
-        echo "Checking if secrets are set..."
-        echo "PROJECT_PATH length: ${#PROJECT_PATH}"
-      env:
-        PROJECT_PATH: ${{ secrets.PROJECT_PATH }}
+    steps:
+      - name: Debug Secrets
+        run: |
+          echo "Checking if secrets are set..."
+          echo "PROJECT_PATH length: ${#PROJECT_PATH}"
+        env:
+          PROJECT_PATH: ${{ secrets.PROJECT_PATH }}
+    
