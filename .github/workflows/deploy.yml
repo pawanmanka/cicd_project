@@ -18,7 +18,7 @@ jobs:
         run:  |
           # Setup SSH Key
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key
-          chmod 600 private_key
+          chmod 400 private_key
 
           # Connect to the staging server and deploy
           ssh -i private_key -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
