@@ -1,47 +1,7 @@
-name: 🚀 Deploy to Server
-
-on:
-  push:
-    branches: [ main ]
-
-
-jobs:
-  deploy:
-    name: Deploy to Production Server
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: 🚀 Checkout Repository
-        uses: actions/checkout@v3
-      - name: Check Secrets variable
-        run: |
-          echo "PROJECT_PATH : ${{ secrets.PROJECT_PATH }}"  
-          echo "SSH_PRIVATE_KEY : ${{ secrets.SSH_PRIVATE_KEY }}"  
-          echo "SSH_USER : ${{ secrets.SSH_USER }}"  
-          echo "SSH_HOST : ${{ secrets.SSH_HOST }}"  
-        
-      - name: 🛠 Debug SSH Key
-        run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" | base64 --decode | tee private_key
-          chmod 600 private_key  
-          cd ${{ secrets.PROJECT_PATH }}  # Navigate to your project directory
-          git checkout main
-          git pull origin main  # Pull the latest code
-      
-      - name: 🔑 Setup SSH & Deploy
-        run:  |
-          # Setup SSH Key
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key
-          chmod 600 private_key
-
-          # Connect to the staging server and deploy
-          ssh -vvv -i private_key -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}
-          echo "🔄 Pulling latest changes..."
-          cd ${{ secrets.PROJECT_PATH }}  # Navigate to your project directory
-          git checkout main
-          git pull origin main  # Pull the latest code
-          echo "✅ Deployment completed successfully!"
-            
-
-      - name: ✅ Deployment Successful
-        run: echo "Deployment completed successfully!"
+steps:
+  - name: Debug Secrets
+    run: |
+      echo "Checking if secrets are set..."
+      echo "PROJECT_PATH length: ${#PROJECT_PATH}"
+    env:
+      PROJECT_PATH: ${{ secrets.PROJECT_PATH }}
