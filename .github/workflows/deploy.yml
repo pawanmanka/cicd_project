@@ -17,23 +17,24 @@ jobs:
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" | base64 --decode | tee private_key
           chmod 600 private_key  
+          cd ${{ secrets.PROJECT_PATH }}  # Navigate to your project directory
+          git checkout main
+          git pull origin main  # Pull the latest code
       
       - name: 🔑 Setup SSH & Deploy
         run:  |
           # Setup SSH Key
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key
-          chmod 400 private_key
+          chmod 600 private_key
 
           # Connect to the staging server and deploy
           ssh -vvv -i private_key -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}
-            echo "🔄 Pulling latest changes..."
-            cd ${{ secrets.PROJECT_PATH }}  # Navigate to your project directory
-            git checkout main
-            git pull origin main  # Pull the latest code
-
-            echo "✅ Deployment completed successfully!"
-            exit
-          EOF
+          echo "🔄 Pulling latest changes..."
+          cd ${{ secrets.PROJECT_PATH }}  # Navigate to your project directory
+          git checkout main
+          git pull origin main  # Pull the latest code
+          echo "✅ Deployment completed successfully!"
+            
 
       - name: ✅ Deployment Successful
         run: echo "Deployment completed successfully!"
