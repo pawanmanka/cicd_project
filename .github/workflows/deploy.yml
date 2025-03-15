@@ -14,8 +14,8 @@ jobs:
         run: |
           echo "Checking if secrets are set..."
           echo "PROJECT_PATH length: ${#PROJECT_PATH}"
-           echo "PROJECT_PATH ${{ secrets.PROJECT_PATH }} "
-           echo "PROJECT_PATH# ${{ #PROJECT_PATH }} "
+           echo "PROJECT_PATH 1 ${{ secrets.PROJECT_PATH }} "
+           echo "PROJECT_PATH 2 ${{ #PROJECT_PATH }} "
         env:
           PROJECT_PATH: ${{ secrets.PROJECT_PATH }}
     
